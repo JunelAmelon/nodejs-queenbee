@@ -48,3 +48,37 @@ app.get("/api/hives/:id", (req, res) => {
 
   res.status(200).json(hive);
 });
+
+
+// Ajouter une mesure pour une ruche
+app.post("/api/hives/:id/measures", (req, res) => {
+  const hiveId = req.params.id;
+
+  // Vérifier que la ruche existe (404 sinon)
+  const hive = hives.find((h) => h.id === hiveId);
+  if (!hive) {
+    return res.status(404).json({ error: `Ruche ${hiveId} introuvable` });
+  }
+
+  // Vérifier les champs obligatoires (400 sinon)
+  const { timestamp, weight_kg, hive_id } = req.body;
+  if (!timestamp || weight_kg === undefined || weight_kg === null) {
+    return res.status(400).json({ error: "Les champs timestamp et weight_kg sont obligatoires" });
+  }
+
+  // Vérifier la cohérence si hive_id est présent dans le corps JSON
+  if (hive_id && hive_id !== hiveId) {
+    return res.status(400).json({ error: "Le hive_id du corps ne correspond pas à celui de l'URL" });
+  }
+
+  // Créer et enregistrer la mesure
+  const newMeasure = {
+    ...req.body,
+    hive_id: hiveId,
+    site_id: hive.site_id,
+  };
+  measures.push(newMeasure);
+
+  // Renvoyer 201 (Created)
+  res.status(201).json(newMeasure);
+});
