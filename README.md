@@ -1,4 +1,4 @@
-# Queen Bee — API
+# Queen Bee API
 
 API de suivi de ruches (poids, température, humidité, inspections).
 
@@ -7,6 +7,7 @@ API de suivi de ruches (poids, température, humidité, inspections).
 - Khady
 - Junel
 - Amale
+- Laura
 
 ## Lancer le serveur
 
@@ -17,7 +18,7 @@ npm run dev          # node --watch src/server.js
 node --env-file=.env src/server.js
 ```
 
-## TP 1 — Lire les mesures sans bloquer
+## TP 1 Lire les mesures sans bloquer
 
 Mesures relevées pendant un import, avec la sonde (`/ping` toutes les 10 ms) :
 
