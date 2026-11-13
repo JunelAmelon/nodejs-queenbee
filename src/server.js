@@ -37,3 +37,14 @@ app.get("/api/hives", (req, res) => {
 
   res.status(200).json(hives);
 });
+
+//Récuperer une seule ruche par son id
+app.get("/api/hives/:id", (req, res) => {
+  const hive = hives.find((h) => h.id === req.params.id);
+
+  if (!hive) {
+    return res.status(404).json({ error: `Ruche ${req.params.id} introuvable` });
+  }
+
+  res.status(200).json(hive);
+});
