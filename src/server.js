@@ -24,4 +24,16 @@ app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok" });
 });
 
+// Lister et filtrer les ruches
+app.get("/api/hives", (req, res) => {
+  const { site_id } = req.query;
 
+  // On vérifie que site_id est bien fourni ET non vide
+  if (site_id && site_id.trim() !== "") {
+    // On filtre les ruches par site_id
+    const filteredHives = hives.filter((hive) => hive.site_id === site_id);
+    return res.status(200).json(filteredHives);
+  }
+
+  res.status(200).json(hives);
+});
