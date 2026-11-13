@@ -82,3 +82,8 @@ app.post("/api/hives/:id/measures", (req, res) => {
   // Renvoyer 201 (Created)
   res.status(201).json(newMeasure);
 });
+
+//lancer le serveur
+app.listen(PORT, () => {
+  console.log(`API Queen Bee démarrée sur http://localhost:${PORT}`);
+});
