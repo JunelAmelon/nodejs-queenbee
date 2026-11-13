@@ -1,22 +1,42 @@
-# Queen Bee API
+# Projet Queen Bee — API v0 (Jour 1)
 
-API de suivi de ruches (poids, température, humidité, inspections).
+Ce dépôt contient l'API v0 du projet **Queen Bee**, développée sous Node.js et Express, permettant la gestion de ruches, de mesures de capteurs et d'inspections terrain, organisée en architecture en couches.
 
-## Membres du groupe
+## Équipe et répartition des tâches
 
-- Khady
-- Junel
-- Amale
-- Laura
+Travail réalisé en groupe :
+* **Junel** — **TP 1** : Expérimentation sur la boucle d'événements Node.js (comparaison lecture bloquante vs lecture en flux).
+* **Jennifer** — **TP 2** : Mise en place des premières routes HTTP en mémoire, journalisation des requêtes et création de la collection de tests.
+* **Amale** — **TP 3** : Rédaction du contrat d'API (`docs/api.md`), implémentation des routes de mesures/inspections et standardisation des erreurs au format RFC 9457.
+* **Khady** — **TP 4** : Refactorisation en architecture en couches (Routeur, Contrôleurs, Services, Repositories), validation des plages physiques et tests unitaires (`node:test`).
 
-## Lancer le serveur
+---
 
-```bash
-npm install
-npm run dev          # node --watch src/server.js
-# ou avec un fichier .env :
-node --env-file=.env src/server.js
-```
+## Installation et démarrage
+
+### 1. Prérequis et base de données
+1. Copier `.env.example` en `.env` et renseigner le mot de passe de la base.
+2. Démarrer PostgreSQL avec Docker :
+   ```bash
+   docker compose up -d
+   ```
+
+### 2. Lancer l'API v0
+1. Installer les dépendances :
+   ```bash
+   npm install
+   ```
+2. Démarrer le serveur en mode développement :
+   ```bash
+   npm run dev
+   ```
+3. Lancer les tests unitaires :
+   ```bash
+   npm test
+   ```
+
+---
+
 
 ## TP 1 Lire les mesures sans bloquer
 
@@ -49,3 +69,29 @@ Mesures relevées pendant un import, avec la sonde (`/ping` toutes les 10 ms) :
    que ~22 ms, donc `/ping` n'attend que très peu. Le problème ne devient
    visible qu'avec un gros fichier, où le blocage dure une fraction de seconde
    voire plusieurs secondes.
+
+### TP 2 — Premières routes en mémoire (Jennifer)
+* **Routes implémentées :**
+  * `GET /health` : vérification de l'état du serveur (`200 OK`).
+  * `GET /api/hives` : récupération de la liste des ruches avec support du filtre optionnel `?site_id=`.
+  * `GET /api/hives/:id` : récupération d'une ruche par identifiant (`200` ou `404`).
+  * `POST /api/hives/:id/measures` : ajout d'une mesure de capteur en mémoire en conservant son `timestamp` d'origine (`201 Created`, `400` ou `404`).
+* **Journalisation & Tests :** Configuration du middleware de logs HTTP (`morgan`) et création/export de la collection Postman couvrant les cas nominaux et les cas d'erreur.
+
+---
+
+### TP 3 — Contrat d’API et gestion des erreurs (Amale)
+
+---
+
+### TP 4 — Architecture en couches et tests unitaires (Khady)
+
+
+## Livrables et architecture du projet
+
+* **`docs/api.md`** : Contrat détaillé des routes HTTP (paramètres, corps attendus, codes de statut et exemples RFC 9457).
+* **`docs/`** : Collection de requêtes Postman/Bruno exportée couvrant les cas nominaux et les cas d'erreur.
+* **`src/`** : Code source de l'API organisé en couches strictes (`routes/`, `controllers/`, `services/`, `repositories/memory/`, `middlewares/`, `utils/`).
+* **`test/`** : Suite de tests unitaires vérifiant les règles métier et les plages physiques des capteurs.
+```
+
